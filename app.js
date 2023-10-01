@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express();
 
-const {globalErrController} = require('./controllers/errorController')
-const {AppError} =require('./utility/appError')
+const { globalErrController } = require('./controllers/errorController')
+const { AppError } = require('./utility/appError')
 const { userRouter } = require(`${__dirname}/routes/userRoutes.js`)
 const { taskRouter } = require(`${__dirname}/routes/taskRoutes`);
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -17,8 +17,8 @@ app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use( express.json() );
-app.use( (req , res , next) =>{
+app.use(express.json());
+app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     next();
 })
@@ -55,7 +55,7 @@ const swaggerOptions = {
     apis: [
         "./routes/userRoutes.js",
         "./routes/taskRoutes.js"
-        ]
+    ]
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -71,10 +71,10 @@ require(`${__dirname}/utility/passport.js`)
 
 //here app.all use for all method(get,post,put,delete)
 //Unhandled Routes Handling 
-app.all('*',(req,res,next)=>{
+app.all('*', (req, res, next) => {
     let err = {
-        name : 'customPathError',
-        message : `Can not find route ${req.originalUrl} on this server, Please check API route.`
+        name: 'customPathError',
+        message: `Can not find route ${req.originalUrl} on this server, Please check API route.`
     }
     return next(new AppError(err, 404));
 })

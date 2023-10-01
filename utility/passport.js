@@ -6,21 +6,21 @@ var JwtStrategy = require('passport-jwt').Strategy,
 var opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRETKEY;
-opts.passReqToCallback= true ;
+opts.passReqToCallback = true;
 
-passport.use(new JwtStrategy(opts, function( req,jwt_payload, done) {
-    
-   //authenticate by passport-jwt
+passport.use(new JwtStrategy(opts, function (req, jwt_payload, done) {
+
+    //authenticate by passport-jwt
     Users.findById(jwt_payload.id)
-        .then( (user) => {
+        .then((user) => {
             if (user) {
                 return done(null, user);
             } else {
                 return done(null, false);
             }
         })
-        .catch( (err) => {
+        .catch((err) => {
             return done(err, false);
-            
+
         });
 }));

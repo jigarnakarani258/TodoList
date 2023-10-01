@@ -6,7 +6,7 @@ const { AppError } = require('../utility/appError');
 
 const signToken = (id, email) => {
   return jwt.sign(
-    { id: id, email: email},
+    { id: id, email: email },
     process.env.JWT_SECRETKEY, {
     expiresIn: process.env.JWT_EXPIRESIN,
   });
@@ -16,9 +16,9 @@ const signToken = (id, email) => {
 const SignUp = async (req, res, next) => {
 
   try {
-    const { name, email, password  } = req.body;
+    const { name, email, password } = req.body;
 
-     if(  name == "string" || email == "string" || password == "string" ){
+    if (name == "string" || email == "string" || password == "string") {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -64,7 +64,7 @@ const LogIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-     if(  email == "string" || password == "string" ){
+    if (email == "string" || password == "string") {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -112,7 +112,7 @@ const LogIn = async (req, res, next) => {
       LogInUser.password
     );
     if (CorrectPassword) {
-      const token = signToken(LogInUser._id, LogInUser.email );
+      const token = signToken(LogInUser._id, LogInUser.email);
       res.status(200).json({
         status: 'Success',
         requestAt: req.requestTime,
@@ -140,7 +140,7 @@ const getCurrentUser = async (req, res, next) => {
 
   try {
     const id = req.user._id
-    let currentUser = await Users.findById(id,{ __v: 0 })
+    let currentUser = await Users.findById(id, { __v: 0 })
     return res.status(200).send({
       status: "success",
       requestAt: req.requestTime,
@@ -159,8 +159,8 @@ const updateCurrentUserProfile = async (req, res, next) => {
   try {
     const id = req.user._id
 
-    let { name , password } = req.body;
-    if(  name == "string" || password == "string" ){
+    let { name, password } = req.body;
+    if (name == "string" || password == "string") {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -177,10 +177,10 @@ const updateCurrentUserProfile = async (req, res, next) => {
       password
     }
 
-    let updatedUser = await Users.findByIdAndUpdate(id , updatedata , {
+    let updatedUser = await Users.findByIdAndUpdate(id, updatedata, {
       new: true,
       runValidators: true
-    } );
+    });
     if (!updatedUser) {
       return res.status(404).json({
         status: "Bad Request",
@@ -207,10 +207,10 @@ const updateCurrentUserProfile = async (req, res, next) => {
 const getAllUserList = async (req, res, next) => {
   try {
     const { name, email } = req.query;
-    const page =  req.query.page || 1 ;
-    const limit =  req.query.limit || 10 ;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
 
-    if(page <= 0 || limit <=0){
+    if (page <= 0 || limit <= 0) {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -222,10 +222,10 @@ const getAllUserList = async (req, res, next) => {
     // create the filter criteria based on query request parameters
     const filter = {};
     if (name) {
-      filter.name = { $regex: new RegExp(name, 'i') }; 
+      filter.name = { $regex: new RegExp(name, 'i') };
     }
     if (email) {
-      filter.email = { $regex: new RegExp(email, 'i') }; 
+      filter.email = { $regex: new RegExp(email, 'i') };
     }
 
     const skip = (page - 1) * limit;

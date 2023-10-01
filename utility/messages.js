@@ -1,8 +1,7 @@
-
 let messages = {}
 
 // Cron Job 
-messages.cron_job_scheduled_failed = "Cron-Job failed." 
+messages.cron_job_scheduled_failed = "Cron-Job failed."
 messages.cron_job_scheduled_success = "CRON job completed successfully."
 
 // user module
@@ -20,7 +19,7 @@ messages.user_update_successfully = "User profile updated successfully!!"
 messages.enter_valid_value_of_user = "please enter valid value of user"
 
 // task module
-messages.task_already_addded_by_user= "This Task is already added by this user successfully"
+messages.task_already_addded_by_user = "This Task is already added by this user successfully"
 messages.task_created_successfully = "Task has been created successfully"
 messages.task_updated_successfully = "Task has been updated successfully"
 messages.task_deleted_successfully = "Task has been deleted successfully"

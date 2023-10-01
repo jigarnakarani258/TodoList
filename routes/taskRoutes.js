@@ -1,11 +1,11 @@
 const express = require('express');
-const {  
+const {
    createTask,
    getTaskByID,
    updateTaskByID,
    deleteTaskByID,
    getAllTaskList
-   } = require('../controllers/taskController')
+} = require('../controllers/taskController')
 const passport = require('passport');
 const taskRouter = express.Router();
 
@@ -55,7 +55,7 @@ const taskRouter = express.Router();
  *       500:
  *         description: Internal Server Error
  */
-taskRouter.route('/createTask/').post( passport.authenticate("jwt", { session: false }), createTask );
+taskRouter.route('/createTask/').post(passport.authenticate("jwt", { session: false }), createTask);
 
 
 /**
@@ -84,7 +84,7 @@ taskRouter.route('/createTask/').post( passport.authenticate("jwt", { session: f
  *       500:
  *         description: Internal Server Error
  */
-taskRouter.route('/getTaskByID/:task_id').get( passport.authenticate("jwt", { session: false }), getTaskByID ) ;
+taskRouter.route('/getTaskByID/:task_id').get(passport.authenticate("jwt", { session: false }), getTaskByID);
 
 /**
  * @swagger
@@ -134,7 +134,7 @@ taskRouter.route('/getTaskByID/:task_id').get( passport.authenticate("jwt", { se
  *       500:
  *         description: Internal Server Error
  */
-taskRouter.route('/updateTaskByID/:task_id').put( passport.authenticate("jwt", { session: false }), updateTaskByID )
+taskRouter.route('/updateTaskByID/:task_id').put(passport.authenticate("jwt", { session: false }), updateTaskByID)
 
 
 /**
@@ -163,7 +163,7 @@ taskRouter.route('/updateTaskByID/:task_id').put( passport.authenticate("jwt", {
  *       500:
  *         description: Internal Server Error
  */
-taskRouter.route('/deleteTaskByID/:task_id').delete( passport.authenticate("jwt", { session: false }), deleteTaskByID )
+taskRouter.route('/deleteTaskByID/:task_id').delete(passport.authenticate("jwt", { session: false }), deleteTaskByID)
 
 
 /**
@@ -219,6 +219,6 @@ taskRouter.route('/deleteTaskByID/:task_id').delete( passport.authenticate("jwt"
  *       401:
  *         description: Unauthorized - JWT token not provided or invalid.
  */
-taskRouter.route('/getAllTaskList').get( passport.authenticate("jwt", { session: false }),  getAllTaskList )
+taskRouter.route('/getAllTaskList').get(passport.authenticate("jwt", { session: false }), getAllTaskList)
 
 module.exports.taskRouter = taskRouter

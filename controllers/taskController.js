@@ -11,7 +11,7 @@ const createTask = async (req, res, next) => {
     //user id get from token
     let createdByUser = req.user._id
 
-    if(  title == "string" || description == "string" || priority == "string"  || dueDate == "string"){
+    if (title == "string" || description == "string" || priority == "string" || dueDate == "string") {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -24,7 +24,7 @@ const createTask = async (req, res, next) => {
       title,
       description,
       dueDate,
-      priority ,
+      priority,
       createdByUser
     });
 
@@ -78,7 +78,7 @@ const getTaskByID = async (req, res, next) => {
     const user_id = (req.user._id).toString();
     let task_id = req.params.task_id
 
-    let getTask = await Tasks.findById(task_id , { __v:0 })
+    let getTask = await Tasks.findById(task_id, { __v: 0 })
 
     if (!getTask) {
       return res.status(404).json({
@@ -88,7 +88,7 @@ const getTaskByID = async (req, res, next) => {
         message: messages.task_not_found_with_provided_id
       });
     }
-    else if( getTask.createdByUser.toString() != user_id ){
+    else if (getTask.createdByUser.toString() != user_id) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -118,7 +118,7 @@ const updateTaskByID = async (req, res, next) => {
     let task_id = req.params.task_id
 
     let accesscheck = await Tasks.findById(task_id)
-    if( !accesscheck  ){
+    if (!accesscheck) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -126,7 +126,7 @@ const updateTaskByID = async (req, res, next) => {
         message: messages.task_not_found_with_provided_id
       });
     }
-    else if( accesscheck.createdByUser.toString() != user_id ) {
+    else if (accesscheck.createdByUser.toString() != user_id) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -134,9 +134,9 @@ const updateTaskByID = async (req, res, next) => {
         message: messages.user_can_not_access_other_user_tasks
       });
     }
-    const { title, description, dueDate, priority , completed } = req.body;
+    const { title, description, dueDate, priority, completed } = req.body;
 
-     if(  title == "string" || description == "string" || priority == "string"  || dueDate == "string" ){
+    if (title == "string" || description == "string" || priority == "string" || dueDate == "string") {
       return res.status(400).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -145,8 +145,8 @@ const updateTaskByID = async (req, res, next) => {
       });
     }
 
-    if(completed){
-      if( completed != true && completed != false ){
+    if (completed) {
+      if (completed != true && completed != false) {
         return res.status(400).json({
           status: "Bad Request",
           requestAt: req.requestTime,
@@ -200,7 +200,7 @@ const deleteTaskByID = async (req, res, next) => {
     let task_id = req.params.task_id
 
     let accesscheck = await Tasks.findById(task_id)
-    if( !accesscheck  ){
+    if (!accesscheck) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -208,7 +208,7 @@ const deleteTaskByID = async (req, res, next) => {
         message: messages.task_not_found_with_provided_id
       });
     }
-    else if( accesscheck.createdByUser.toString() != user_id ) {
+    else if (accesscheck.createdByUser.toString() != user_id) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -216,10 +216,10 @@ const deleteTaskByID = async (req, res, next) => {
         message: messages.user_can_not_access_other_user_tasks
       });
     }
-    
+
     let deleteTask = await Tasks.findByIdAndDelete(task_id)
 
-    if (!deleteTask ) {
+    if (!deleteTask) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -232,7 +232,7 @@ const deleteTaskByID = async (req, res, next) => {
         status: "success",
         requestAt: req.requestTime,
         Task_id: deleteTask._id,
-        Task_Title : deleteTask.title,
+        Task_Title: deleteTask.title,
         message: messages.task_deleted_successfully,
       });
     }
@@ -244,17 +244,17 @@ const deleteTaskByID = async (req, res, next) => {
 
 //getAllTaskList API , Authenticated with Passport JS
 const getAllTaskList = async (req, res, next) => {
- 
+
   try {
 
     //user id get from token
     const user_id = req.user._id
 
-    const {  title, description, dueDate, priority ,completed } = req.query;
-    const page =  req.query.page || 1 ;
-    const limit =  req.query.limit || 10 ;
+    const { title, description, dueDate, priority, completed } = req.query;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
 
-    if(page <= 0 || limit <=0){
+    if (page <= 0 || limit <= 0) {
       return res.status(401).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -262,16 +262,16 @@ const getAllTaskList = async (req, res, next) => {
         message: messages.enter_valid_value_for_pagination
       });
     }
-    
+
     // create the filter criteria based on query request parameters
     const filter = {};
     if (title) {
-      filter.title = { $regex: new RegExp(title, 'i') }; 
+      filter.title = { $regex: new RegExp(title, 'i') };
     }
     if (description) {
-      filter.description = { $regex: new RegExp(description, 'i') }; 
+      filter.description = { $regex: new RegExp(description, 'i') };
     }
-    if (dueDate) {                       
+    if (dueDate) {
       filter.dueDate = dueDate;
     }
     if (priority) {
@@ -280,32 +280,32 @@ const getAllTaskList = async (req, res, next) => {
     if (completed) {
       filter.completed = completed;
     }
-   
-     const skip = (page - 1) * limit;
-    
-     filter.createdByUser = user_id
 
-     // Query into mongoDB with filtering and pagination
-     const taskList = await Tasks.find(filter , { __v : 0 })
-       .skip(skip)
-       .limit(limit);
- 
-     const totalResults = await Tasks.countDocuments(filter);
- 
-     return res.status(200).send({
-       status: "success",
-       requestAt: req.requestTime,
-       NoResults: taskList.length,
-       totalResults,
-       data: {
-         tasks: taskList,
-       },
-     });
-   } catch (err) {
-     return next(new AppError(err, 400));
-   }
- };
- 
+    const skip = (page - 1) * limit;
+
+    filter.createdByUser = user_id
+
+    // Query into mongoDB with filtering and pagination
+    const taskList = await Tasks.find(filter, { __v: 0 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalResults = await Tasks.countDocuments(filter);
+
+    return res.status(200).send({
+      status: "success",
+      requestAt: req.requestTime,
+      NoResults: taskList.length,
+      totalResults,
+      data: {
+        tasks: taskList,
+      },
+    });
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+};
+
 module.exports = {
   createTask,
   getTaskByID,
