@@ -7,6 +7,7 @@ const {AppError} =require('./utility/appError')
 
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const passport = require('passport');
 
 
 app.use(cors());
@@ -19,6 +20,10 @@ app.use( (req , res , next) =>{
     next();
 })
 
+
+//passport authentication 
+app.use(passport.initialize());
+require(`${__dirname}/utility/passport.js`)
 
 
 //here app.all use for all method(get,post,put,delete)
