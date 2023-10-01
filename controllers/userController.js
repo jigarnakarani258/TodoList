@@ -135,8 +135,27 @@ const LogIn = async (req, res, next) => {
 
 };
 
+//GetCurrentUser API , Authenticated with Passport JS
+const getCurrentUser = async (req, res, next) => {
+
+  try {
+    const id = req.user._id
+    let currentUser = await Users.findById(id,{ __v: 0 })
+    return res.status(200).send({
+      status: "success",
+      requestAt: req.requestTime,
+      user: currentUser,
+      message: messages.user_get_successfully,
+    });
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+
+};
+
 
 module.exports = {
   SignUp,
-  LogIn
+  LogIn,
+  getCurrentUser
 }
