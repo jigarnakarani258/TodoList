@@ -203,11 +203,58 @@ const updateCurrentUserProfile = async (req, res, next) => {
 
 };
 
+//getAllUserList API , Authenticated with Passport JS
+const getAllUserList = async (req, res, next) => {
+  try {
+    const { name, email } = req.query;
+    const page =  req.query.page || 1 ;
+    const limit =  req.query.limit || 10 ;
 
+    if(page <= 0 || limit <=0){
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_for_pagination
+      });
+    }
+
+    // create the filter criteria based on query request parameters
+    const filter = {};
+    if (name) {
+      filter.name = { $regex: new RegExp(name, 'i') }; 
+    }
+    if (email) {
+      filter.email = { $regex: new RegExp(email, 'i') }; 
+    }
+
+    const skip = (page - 1) * limit;
+
+    // Query into mongoDB with filtering and pagination
+    const userList = await Users.find(filter, { __v: 0 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalResults = await Users.countDocuments(filter);
+
+    return res.status(200).send({
+      status: "success",
+      requestAt: req.requestTime,
+      NoResults: userList.length,
+      totalResults,
+      data: {
+        users: userList,
+      },
+    });
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+};
 
 module.exports = {
   SignUp,
   LogIn,
   getCurrentUser,
-  updateCurrentUserProfile
+  updateCurrentUserProfile,
+  getAllUserList
 }
