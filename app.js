@@ -11,6 +11,7 @@ const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const passport = require('passport');
+const { cronJob } = require('./controllers/cronJobController');
 
 app.use(cors());
 app.use(bodyParser.json())
@@ -60,7 +61,8 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-
+//Schedule Cron-Job
+cronJob();
 
 //passport authentication 
 app.use(passport.initialize());

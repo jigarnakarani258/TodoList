@@ -1,7 +1,9 @@
 
 let messages = {}
 
-
+// Cron Job 
+messages.cron_job_scheduled_failed = "Cron-Job failed." 
+messages.cron_job_scheduled_success = "CRON job completed successfully."
 
 // user module
 messages.email_already_exist = "This email already exists.!!"
