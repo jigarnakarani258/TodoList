@@ -145,13 +145,15 @@ const updateTaskByID = async (req, res, next) => {
       });
     }
 
-    if( completed != true && completed != false ){
-      return res.status(400).json({
-        status: "Bad Request",
-        requestAt: req.requestTime,
-        errorCode: 400,
-        message: messages.enter_valid_value_of_task_completed_flag
-      });
+    if(completed){
+      if( completed != true && completed != false ){
+        return res.status(400).json({
+          status: "Bad Request",
+          requestAt: req.requestTime,
+          errorCode: 400,
+          message: messages.enter_valid_value_of_task_completed_flag
+        });
+      }
     }
 
     let updateTaskData = {
