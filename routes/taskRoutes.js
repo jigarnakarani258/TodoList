@@ -3,7 +3,8 @@ const {
    createTask,
    getTaskByID,
    updateTaskByID,
-   deleteTaskByID
+   deleteTaskByID,
+   getAllTaskList
    } = require('../controllers/taskController')
 const passport = require('passport');
 const taskRouter = express.Router();

@@ -224,12 +224,76 @@ const deleteTaskByID = async (req, res, next) => {
 
 };
 
+//getAllTaskList API , Authenticated with Passport JS
+const getAllTaskList = async (req, res, next) => {
+ 
+  try {
 
+    //user id get from token
+    const user_id = req.user._id
+
+    const {  title, description, dueDate, priority ,completed } = req.query;
+    const page =  req.query.page || 1 ;
+    const limit =  req.query.limit || 10 ;
+
+    if(page <= 0 || limit <=0){
+      return res.status(401).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_for_pagination
+      });
+    }
+    
+    // create the filter criteria based on query request parameters
+    const filter = {};
+    if (title) {
+      filter.title = { $regex: new RegExp(title, 'i') }; 
+    }
+    if (description) {
+      filter.description = { $regex: new RegExp(description, 'i') }; 
+    }
+    if (dueDate) {                       
+      filter.dueDate = dueDate;
+    }
+    if (priority) {
+      filter.priority = priority;
+    }
+    if (completed) {
+      filter.completed = completed;
+    }
+   
+     const skip = (page - 1) * limit;
+    
+     filter.createdByUser = user_id
+
+     // Query into mongoDB with filtering and pagination
+     const taskList = await Tasks.find(filter , { __v : 0 })
+       .skip(skip)
+       .limit(limit);
+ 
+     const totalResults = await Tasks.countDocuments(filter);
+ 
+     return res.status(200).send({
+       status: "success",
+       requestAt: req.requestTime,
+       NoResults: taskList.length,
+       totalResults,
+       data: {
+         tasks: taskList,
+       },
+     });
+   } catch (err) {
+     return next(new AppError(err, 400));
+   }
+ };
+ 
 module.exports = {
   createTask,
   getTaskByID,
   updateTaskByID,
-  deleteTaskByID
+  deleteTaskByID,
+  getAllTaskList
 };
 
 
