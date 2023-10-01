@@ -181,13 +181,55 @@ const updateTaskByID = async (req, res, next) => {
 
 };
 
+//deleteTaskByID API , Authenticated with Passport JS
+const deleteTaskByID = async (req, res, next) => {
 
- 
+  try {
+    //user id get from token
+    const user_id = (req.user._id).toString();
+    let task_id = req.params.task_id
+
+    let accesscheck = await Tasks.findById(task_id)
+    if( !accesscheck || accesscheck.createdByUser.toString() != user_id ) {
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.user_can_not_access_other_user_tasks
+      });
+    }
+    
+    let deleteTask = await Tasks.findByIdAndDelete(task_id)
+
+    if (!deleteTask ) {
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.task_not_found_with_provided_id
+      });
+    }
+    else {
+      return res.status(200).send({
+        status: "success",
+        requestAt: req.requestTime,
+        Task_id: deleteTask._id,
+        Task_Title : deleteTask.title,
+        message: messages.task_deleted_successfully,
+      });
+    }
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+
+};
+
+
 module.exports = {
   createTask,
   getTaskByID,
-  updateTaskByID
- 
+  updateTaskByID,
+  deleteTaskByID
 };
 
 

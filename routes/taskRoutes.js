@@ -2,7 +2,8 @@ const express = require('express');
 const {  
    createTask,
    getTaskByID,
-   updateTaskByID
+   updateTaskByID,
+   deleteTaskByID
    } = require('../controllers/taskController')
 const passport = require('passport');
 const taskRouter = express.Router();
@@ -135,6 +136,88 @@ taskRouter.route('/getTaskByID/:task_id').get( passport.authenticate("jwt", { se
 taskRouter.route('/updateTaskByID/:task_id').put( passport.authenticate("jwt", { session: false }), updateTaskByID )
 
 
+/**
+ * @swagger
+ * /deleteTaskByID/{task_id}:
+ *   delete:
+ *     tags:
+ *       - Task Management
+ *     summary: Delete a task by ID
+ *     description: Delete a task by its unique ID.
+ *     security:
+ *       - jwt: []  # Requires JWT token authentication
+ *     parameters:
+ *       - name: task_id
+ *         in: path
+ *         description: The ID of the task to delete.
+ *         required: true
+ *         type: string
+ *     responses:
+ *       204:
+ *         description: Task deleted successfully
+ *       404:
+ *         description: Task not found
+ *       401:
+ *         description: Unauthorized - JWT token not provided or invalid.
+ *       500:
+ *         description: Internal Server Error
+ */
+taskRouter.route('/deleteTaskByID/:task_id').delete( passport.authenticate("jwt", { session: false }), deleteTaskByID )
 
+
+/**
+ * @swagger
+ * /getAllTaskList:
+ *   get:
+ *     tags:
+ *       - Task Management
+ *     summary: Get a list of all tasks of loggedInUser.
+ *     description: Retrieve a list of all tasks of loggedInUser based on query parameters.
+ *     security:
+ *       - jwt: []  # Requires JWT token authentication
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         description: Filter by task title (optional)
+ *         required: false
+ *         type: string
+ *       - name: description
+ *         in: query
+ *         description: Filter by task description (optional)
+ *         required: false
+ *         type: string
+ *       - name: dueDate
+ *         in: query
+ *         description: Filter by task dueDate (optional) //sample 2024-09-30
+ *         required: false
+ *         type: string
+ *         format: date
+ *       - name: priority
+ *         in: query
+ *         description: Filter by task priority (optional)
+ *         required: false
+ *         type: string
+ *       - name: completed
+ *         in: query
+ *         description: Filter by task completion status (optional)
+ *         required: false
+ *         type: boolean
+ *       - name: page
+ *         in: query
+ *         description: Page number for pagination (optional)
+ *         required: false
+ *         type: integer
+ *       - name: limit
+ *         in: query
+ *         description: Number of results per page (optional)
+ *         required: false
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       401:
+ *         description: Unauthorized - JWT token not provided or invalid.
+ */
+taskRouter.route('/getAllTaskList').get( passport.authenticate("jwt", { session: false }),  getAllTaskList )
 
 module.exports.taskRouter = taskRouter
