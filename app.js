@@ -4,6 +4,7 @@ const app = express();
 const {globalErrController} = require('./controllers/errorController')
 const {AppError} =require('./utility/appError')
 const { userRouter } = require(`${__dirname}/routes/userRoutes.js`)
+const { taskRouter } = require(`${__dirname}/routes/taskRoutes`);
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -22,6 +23,7 @@ app.use( (req , res , next) =>{
 })
 
 app.use('/api/v1', userRouter)
+app.use('/api/v1', taskRouter)
 
 const swaggerOptions = {
     swaggerDefinition: {
