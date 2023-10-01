@@ -1,6 +1,7 @@
 const express = require('express');
 const {  
-   createTask
+   createTask,
+   getTaskByID
    } = require('../controllers/taskController')
 const passport = require('passport');
 const taskRouter = express.Router();
@@ -52,5 +53,36 @@ const taskRouter = express.Router();
  *         description: Internal Server Error
  */
 taskRouter.route('/createTask/').post( passport.authenticate("jwt", { session: false }), createTask );
+
+
+/**
+ * @swagger
+ * /getTaskByID/{task_id}:
+ *   get:
+ *     tags:
+ *       - Task Management
+ *     summary: Get a task by ID
+ *     description: Retrieve a task by its unique ID.
+ *     security:
+ *       - jwt: []  # Requires JWT token authentication
+ *     parameters:
+ *       - name: task_id
+ *         in: path
+ *         description: The ID of the task to retrieve.
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       404:
+ *         description: Product not found
+ *       401:
+ *         description: Unauthorized - JWT token not provided or invalid.
+ *       500:
+ *         description: Internal Server Error
+ */
+taskRouter.route('/getTaskByID/:task_id').get( passport.authenticate("jwt", { session: false }), getTaskByID ) ;
+
+
 
 module.exports.taskRouter = taskRouter
