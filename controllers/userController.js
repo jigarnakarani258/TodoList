@@ -58,7 +58,85 @@ const SignUp = async (req, res, next) => {
   }
 };
 
+//LogIn API
+const LogIn = async (req, res, next) => {
+
+  try {
+    const { email, password } = req.body;
+
+     if(  email == "string" || password == "string" ){
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_of_user
+      });
+    }
+
+    //1) Check email and password exists.
+    if (!email) {
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.provide_email,
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.provide_password,
+      });
+    }
+
+    //2) Check if user exist
+    const ValidUser = await Users.findOne({ email: email });
+    if (ValidUser) {
+      var LogInUser = await Users.findOne({ email: email }).select('+password');
+    }
+    else {
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.invalid_email
+      });
+    }
+
+    //3) password is correct
+    const CorrectPassword = await ValidUser.ValidatePassword(
+      password,
+      LogInUser.password
+    );
+    if (CorrectPassword) {
+      const token = signToken(LogInUser._id, LogInUser.email );
+      res.status(200).json({
+        status: 'Success',
+        requestAt: req.requestTime,
+        token: `Bearer ${token}`,
+        message: messages.user_login_successfully
+      });
+    }
+    else {
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.invalid_password
+      });
+    }
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+
+
+};
+
+
 module.exports = {
-  SignUp
- 
+  SignUp,
+  LogIn
 }

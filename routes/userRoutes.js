@@ -1,5 +1,5 @@
 const express = require('express');
-const { SignUp
+const { SignUp, LogIn
 } = require('../controllers/userController')
 const passport = require('passport');
 const userRouter = express.Router();
@@ -38,5 +38,32 @@ const userRouter = express.Router();
  */
 userRouter.route('/SignUp').post(SignUp)
 
+/**
+ * @swagger
+ * /LogIn:
+ *   post:
+ *     tags:
+ *       - User Management
+ *     summary: Log-In user with email and password.
+ *     description: Log in user with email and password on Todo-List using this api.
+ *     parameters:
+ *      - in: body
+ *        name: Log-In
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            password:
+ *              type: string
+ *     responses:
+ *       200:
+ *         description: Sign in successful
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ */
+userRouter.route('/LogIn').post(LogIn);
 
 module.exports.userRouter = userRouter
