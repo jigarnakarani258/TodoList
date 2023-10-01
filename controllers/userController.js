@@ -153,9 +153,61 @@ const getCurrentUser = async (req, res, next) => {
 
 };
 
+//UpdateCurrentUserProfile API , Authenticated with Passport JS
+const updateCurrentUserProfile = async (req, res, next) => {
+
+  try {
+    const id = req.user._id
+
+    let { name , password } = req.body;
+    if(  name == "string" || password == "string" ){
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_of_user
+      });
+    }
+
+    if (password) {
+      password = await bcrypt.hash(password, 12);
+    }
+    let updatedata = {
+      name,
+      password
+    }
+
+    let updatedUser = await Users.findByIdAndUpdate(id , updatedata , {
+      new: true,
+      runValidators: true
+    } );
+    if (!updatedUser) {
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.user_not_found_with_provided_id
+      });
+    }
+    else {
+      return res.status(200).json({
+        status: "Success",
+        requestAt: req.requestTime,
+        message: messages.user_update_successfully,
+        updatedUser: updatedUser,
+      });
+    }
+  } catch (err) {
+    return next(new AppError(err, 400));
+  }
+
+};
+
+
 
 module.exports = {
   SignUp,
   LogIn,
-  getCurrentUser
+  getCurrentUser,
+  updateCurrentUserProfile
 }
