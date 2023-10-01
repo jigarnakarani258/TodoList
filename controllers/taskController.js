@@ -110,9 +110,84 @@ const getTaskByID = async (req, res, next) => {
 
 };
 
+//updateTaskByID API , Authenticated with Passport JS
+const updateTaskByID = async (req, res, next) => {
+
+  try {
+    const user_id = (req.user._id).toString();
+    let task_id = req.params.task_id
+
+    let accesscheck = await Tasks.findById(task_id)
+    if( !accesscheck || accesscheck.createdByUser.toString() != user_id ) {
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.user_can_not_access_other_user_tasks
+      });
+    }
+    const { title, description, dueDate, priority , completed } = req.body;
+
+     if(  title == "string" || description == "string" || priority == "string"  || dueDate == "string" ){
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_of_task
+      });
+    }
+
+    if( completed != true && completed != false ){
+      return res.status(400).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 400,
+        message: messages.enter_valid_value_of_task_completed_flag
+      });
+    }
+
+    let updateTaskData = {
+      title,
+      description,
+      dueDate,
+      priority,
+      completed
+    }
+
+    let updatedTask = await Tasks.findByIdAndUpdate(task_id, updateTaskData, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedTask) {
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.task_not_found_with_provided_id
+      });
+    }
+    else {
+      return res.status(200).json({
+        status: "Success",
+        requestAt: req.requestTime,
+        updatedTask: updatedTask,
+        message: messages.task_updated_successfully,
+      });
+    }
+  }
+  catch (err) {
+    return next(new AppError(err, 400));
+  }
+
+};
+
+
+ 
 module.exports = {
   createTask,
-  getTaskByID
+  getTaskByID,
+  updateTaskByID
+ 
 };
 
 

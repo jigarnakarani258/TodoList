@@ -1,7 +1,8 @@
 const express = require('express');
 const {  
    createTask,
-   getTaskByID
+   getTaskByID,
+   updateTaskByID
    } = require('../controllers/taskController')
 const passport = require('passport');
 const taskRouter = express.Router();
@@ -82,6 +83,57 @@ taskRouter.route('/createTask/').post( passport.authenticate("jwt", { session: f
  *         description: Internal Server Error
  */
 taskRouter.route('/getTaskByID/:task_id').get( passport.authenticate("jwt", { session: false }), getTaskByID ) ;
+
+/**
+ * @swagger
+ * /updateTaskByID/{task_id}:
+ *   put:
+ *     tags:
+ *       - Task Management
+ *     summary: Update a task by ID
+ *     description: Update the details of a task by its unique ID.
+ *     security:
+ *       - jwt: []  # Requires JWT token authentication
+ *     parameters:
+ *       - name: task_id
+ *         in: path
+ *         description: The ID of the task to update.
+ *         required: true
+ *         type: string
+ *       - in: body
+ *         name: updateTask
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *               description: The updated title of the task.
+ *             description:
+ *               type: string
+ *               description: The updated description of the task.
+ *             dueDate:
+ *               type: string
+ *               format: date
+ *               description: The updated due date of the task.
+ *             priority:
+ *               type: string
+ *               description: The updated priority of the task.
+ *             completed:
+ *               type: boolean
+ *               description: The updated completion status of the task - true or false.
+ *     responses:
+ *       200:
+ *         description: Task updated successfully
+ *       404:
+ *         description: Task not found
+ *       401:
+ *         description: Unauthorized - JWT token not provided or invalid.
+ *       500:
+ *         description: Internal Server Error
+ */
+taskRouter.route('/updateTaskByID/:task_id').put( passport.authenticate("jwt", { session: false }), updateTaskByID )
+
 
 
 
