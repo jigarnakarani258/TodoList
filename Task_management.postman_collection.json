@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "09cc8392-6138-4621-ae55-f52e6ca74720",
+		"name": "Task_management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23434291"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"name\": \"shreyas\",\r\n    \"email\": \"shreyas@gmail.com\",\r\n    \"password\": \"shreyas@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/SignUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"SignUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"shreyas@gmail.com\",\r\n    \"password\" : \"shreyas@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/LogIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"LogIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCurrentProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTk1OTEwNjQxZDY1MmI5OTFmZjU0NCIsImVtYWlsIjoic2hyZXlhc0BnbWFpbC5jb20iLCJpYXQiOjE2OTYxNjAwMjQsImV4cCI6MTY5ODc1MjAyNH0.b4CJH-yeINtlrI3ZB_vmZ_FnfOYk6MVlDk_Jz8AUMTo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/GetCurrentProfile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"GetCurrentProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTk1OTEwNjQxZDY1MmI5OTFmZjU0NCIsImVtYWlsIjoic2hyZXlhc0BnbWFpbC5jb20iLCJpYXQiOjE2OTYxNjAwMjQsImV4cCI6MTY5ODc1MjAyNH0.b4CJH-yeINtlrI3ZB_vmZ_FnfOYk6MVlDk_Jz8AUMTo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"name\": \"shrey\",\r\n    \"password\": \"shreyas@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/UpdateProfile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"UpdateProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUserList",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTgxNjczOWNiMDcwMjhjNzUzNmQ2OCIsImVtYWlsIjoiamlnYXJAZ21haWwuY29tIiwiaWF0IjoxNjk2MDg1ODcwLCJleHAiOjE2OTg2Nzc4NzB9.KwpVPkEJPtPKX4NqIoM8-qNFCr0UTbKZ-yrysgGOsbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/getAllUserList?page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"getAllUserList"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "jigar1",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "createTask",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Web-app-4\",\r\n  \"description\": \"development\",\r\n  \"dueDate\": \"2022-10-30\",\r\n  \"priority\": \"high\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/createTask",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"createTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTaskByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/getTaskByID/6519595d641d652b991ff553",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"getTaskByID",
+								"6519595d641d652b991ff553"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTaskByID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Web-app-todolist\",\r\n  \"description\": \"test\",\r\n  \"dueDate\": \"2023-10-03\",\r\n  \"priority\": \"high\",\r\n  \"completed\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/updateTaskByID/65195977641d652b991ff559",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"updateTaskByID",
+								"65195977641d652b991ff559"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTaskByID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/deleteTaskByID/65195b9e641d652b991ff560",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"deleteTaskByID",
+								"65195b9e641d652b991ff560"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllTaskList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/getAllTaskList?page=1&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"getAllTaskList"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "dueDate",
+									"value": "2024-09-30",
+									"disabled": true
+								},
+								{
+									"key": "priority",
+									"value": "low",
+									"disabled": true
+								},
+								{
+									"key": "completed",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTk1OTEwNjQxZDY1MmI5OTFmZjU0NCIsImVtYWlsIjoic2hyZXlhc0BnbWFpbC5jb20iLCJpYXQiOjE2OTYxNjAwMjQsImV4cCI6MTY5ODc1MjAyNH0.b4CJH-yeINtlrI3ZB_vmZ_FnfOYk6MVlDk_Jz8AUMTo",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

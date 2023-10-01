@@ -118,7 +118,15 @@ const updateTaskByID = async (req, res, next) => {
     let task_id = req.params.task_id
 
     let accesscheck = await Tasks.findById(task_id)
-    if( !accesscheck || accesscheck.createdByUser.toString() != user_id ) {
+    if( !accesscheck  ){
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.task_not_found_with_provided_id
+      });
+    }
+    else if( accesscheck.createdByUser.toString() != user_id ) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
@@ -190,7 +198,15 @@ const deleteTaskByID = async (req, res, next) => {
     let task_id = req.params.task_id
 
     let accesscheck = await Tasks.findById(task_id)
-    if( !accesscheck || accesscheck.createdByUser.toString() != user_id ) {
+    if( !accesscheck  ){
+      return res.status(404).json({
+        status: "Bad Request",
+        requestAt: req.requestTime,
+        errorCode: 404,
+        message: messages.task_not_found_with_provided_id
+      });
+    }
+    else if( accesscheck.createdByUser.toString() != user_id ) {
       return res.status(404).json({
         status: "Bad Request",
         requestAt: req.requestTime,
